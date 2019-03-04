@@ -37,15 +37,23 @@ Elements
 - rain
 - birds
 
-User Interaction
-- mouse: minesweeper game!
-- keyboard: 'n' for manual new game; 'r' for toggle rain; 'l' for toggle lightning; 'f' while clicking to place flag
+User Interaction (minesweeper game!)
+- mouse
+  - allows clicking, flagging, sweeping squares
+- keyboard
+  - 'n' for manual new game
+  - 'r' for toggle rain
+  - 'l' for toggle lightning
+  - 'f' while clicking to place flag
 
 
 Note use of translate(0, 0, z) frequently throughout to avoid drawing shapes in the same plane;
 this provides full control over the ordering of shapes on the screen (i.e. which is "closer" to the user).
 
 Input is temporarily disabled when the new game is loading.
+
+Heavy modularization allows easy addition of features such as difficulty levels (different board
+sizes, number of mines, etc.)
 */
 
 
@@ -100,8 +108,8 @@ void drawCursor() {
 
 void drawBirds() {
   // draw birds flying at different speeds
-  // use math to vary speed, time off-screen, etc.
-  drawBird((frameCount + 200) % (width * 1.5), 200, 50);
+  // use math to vary speed, direction, time off-screen, etc.
+  drawBird(width * 1.5 - (frameCount + 200) % (width * 1.5), 200, 50);
   drawBird(1.2 * frameCount % (width * 2.5), 300, 50);
   drawBird((0.8 * frameCount + 350) % (width * 2), 400, 50);
   drawBird((1.6 * frameCount + 750) % (width * 2), 150, 50);
@@ -186,7 +194,11 @@ void mousePressed() {
       return; // didn't click on a square
     }
     if (!keyPressed) {
-      mg.clickSquare(sq[0], sq[1]);
+      if (!mg.grid[sq[0]][sq[1]].isClicked()) {
+        mg.clickSquare(sq[0], sq[1]);
+      } else {
+        mg.sweep(sq[0], sq[1]);
+      }
       if (won || lost && endTime == -1) {
         endTime = frameCount;
       }

@@ -84,6 +84,21 @@ class MinesweeperGrid {
     return ret;
   }
   
+  int flaggedAround(int y, int x) {
+    int ret = 0;
+    for (int i = max(0, y - 1); i <= min(n - 1, y + 1); i++) {
+      for (int j = max(0, x - 1); j <= min(m - 1, x + 1); j++) {
+        if (i == y && j == x) {
+          continue; // skip the square checked
+        }
+        if (grid[i][j].isFlagged()) {
+          ret++;
+        }
+      }
+    }
+    return ret;
+  }
+  
   void bfs(int y, int x) {
     // queue implemented as an array
     int beg = 0, end = -1; // beginning and end of queue
@@ -137,6 +152,24 @@ class MinesweeperGrid {
       numFlagged--;
     }
     grid[y][x].toggleFlagged();
+  }
+  
+  void sweep(int y, int x) {
+    assert grid[y][x].isClicked();
+    assert !grid[y][x].isMine();
+    if (flaggedAround(y, x) != grid[y][x].getValue()) {
+      return;
+    }
+    for (int i = max(0, y - 1); i <= min(n - 1, y + 1); i++) {
+      for (int j = max(0, x - 1); j <= min(m - 1, x + 1); j++) {
+        if (i == y && j == x) {
+          continue; // skip the square checked
+        }
+        if (!grid[i][j].isFlagged()) {
+          clickSquare(i, j);
+        }
+      }
+    }
   }
   
   void display(boolean detectMouse) {
