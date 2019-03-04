@@ -1,6 +1,16 @@
 /*
 Andy Dong
+Mr. Schaeffer
+TEJ 3M
 March 4, 2019
+
+A game of minesweeper in a dark, gloomy atmosphere...
+
+Right-click to place a flag
+Click on an already-clicked square to sweep adjacent squares
+Press r to toggle rain
+Press l to toggle lightning
+Press n for a new game at any time (will automatically start a new game when game over)
 
 Shapes
 - ellipses: mines
@@ -47,27 +57,38 @@ User Interaction (minesweeper game!)
   - 'r' for toggle rain
   - 'l' for toggle lightning
 
+Comments
+- whenever a command adds something to the screen (text, draw)
+- loops (for and while); used frequently to loop through arrays (1D and 2D)
+- if/else if/else; used nearly everywhere
 
-Note use of translate(0, 0, z) frequently throughout to avoid drawing shapes in the same plane;
+
+Additional Notes
+
+Note the use of translate(0, 0, z) frequently throughout to avoid drawing shapes in the same plane;
 this provides full control over the ordering of shapes on the screen (i.e. which is "closer" to the user).
 
-Input is temporarily disabled when the new game is loading.
+Mouse input is temporarily disabled when the new game is loading.
 
 Heavy modularization allows easy addition of features such as difficulty levels (different board
 sizes, number of mines, etc.)
 
 To change the board size, change the BOARD_SIZE variable in the code.
+(Only square boards work as of now to avoid window-resizing shenanigans.)
+
 Note that the minesweeper game may still be a bit buggy, however it works
-in most use cases.
+well in most cases.
 */
 
 
 import java.util.Collection;
 import java.util.Collections;
 
+
 final int BOARD_SIZE = 15; // 20 by 20 board
 final float SQUARE_SIZE = 400.0 / BOARD_SIZE;
 final int NUM_RAINDROPS = 1000;
+
 
 MinesweeperGrid mg;
 boolean showTitle = false;
@@ -83,7 +104,7 @@ int lastLightning;
 
 void setup() {
   textAlign(CENTER);
-  text("Avoid lag on first click please lol", 0, -1000);
+  text(".", 0, -1000); // to avoid lag on the first appearance of text
   noCursor();
   size(800, 800, P3D);
   newGame();
@@ -99,6 +120,7 @@ void newGame() {
   mg = new MinesweeperGrid(BOARD_SIZE, BOARD_SIZE, new Point(200, 200), SQUARE_SIZE, 40);
   won = lost = false;
   endTime = -1;
+  // uncomment the below lines to see the grid
 //  for (int y = 0; y < mg.n; y++) {
 //    for (int x = 0; x < mg.m; x++) {
 //      print(mg.grid[y][x].getValue() + " ");
@@ -110,7 +132,7 @@ void newGame() {
 
 void drawCursor() {
   pushMatrix();
-  translate(0, 0, 2);
+  translate(0, 0, 2); // display slightly above the board
   fill(255);
   ellipse(mouseX, mouseY, 5, 5); // in-game cursor
   popMatrix();
@@ -164,21 +186,21 @@ void drawLightning() {
 void handleWon() {
   fill(#C4CCFC);
   textSize(20);
-  text("Congratulations, you won!", width / 2, height / 15);
+  text("Congratulations, you won!", width / 2, height / 15); // win prompt
   delayBetweenGames = 200;
 }
 
 void handleLost() {
   fill(255);
   textSize(20);
-  text("You hit a mine. You lost!", width / 2, height / 15);
+  text("You hit a mine. You lost!", width / 2, height / 15); // lose prompt
   delayBetweenGames = 100;
 }
 
 void showMinesLeft() {
   fill(255);
   textSize(20);
-  text("Mines remaining: " + max(0, mg.mines - mg.numFlagged), width / 2, height / 50);
+  text("Mines remaining: " + max(0, mg.mines - mg.numFlagged), width / 2, height / 50); // mines left
 }
 
 void draw() {
@@ -187,7 +209,7 @@ void draw() {
     
     return;
   }
-  if (showLightning && frameCount - lastLightning >= delayLightning) {
+  if (showLightning && frameCount - lastLightning >= delayLightning) { // it has been long enough since the last lightning strike
     drawLightning();
     lastLightning = frameCount;
     delayLightning = random(600, 1200);
@@ -197,15 +219,15 @@ void draw() {
   rotateX(radians(20));
   drawCursor();
   mg.display(endTime == -1);
-  if (won) {
+  if (won) { // user won the game
     handleWon();
-  } else if (lost) {
+  } else if (lost) { // user lost the game
     handleLost();
   }
-  if (endTime != -1 && frameCount - endTime >= delayBetweenGames) {
+  if (endTime != -1 && frameCount - endTime >= delayBetweenGames) { // it has been long enough since the last game ended
     newGame();
   }
-  //println("flagged: " + mg.numFlagged);
+  // draw scenery and update game
   drawBirds();
   drawTrees();
   drawRain();

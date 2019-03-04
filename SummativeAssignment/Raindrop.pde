@@ -23,11 +23,11 @@ class Raindrop {
   }
   
   void displayFrame() {
-    if (!show) {
+    if (!show) { // we don't want to show this raindrop
       return;
     }
     fill(0, 0, 128);
-    line(x, y, z, x, y, z - 10);
+    line(x, y, z, x, y, z - 10); // draw a blue line
     z -= RAIN_SPEED;
   }
 }

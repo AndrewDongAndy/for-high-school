@@ -47,21 +47,22 @@ class MinesweeperSquare {
     rect(topLeft.x, topLeft.y, sideLength, sideLength);
     float centreX = topLeft.x + sideLength / 2;
     float centreY = topLeft.y + sideLength / 2;
-    if (isFlagged()) {
+    if (isFlagged()) { // this square is flagged
       drawFlag(centreX, centreY, 4.0 / 5 * sideLength);
       return;
     }
-    if (!isClicked()) {
+    if (!isClicked()) { // this square is clicked
       return;
     }
-    if (isMine()) {
+    if (isMine()) { // this square is a mine
       drawMine(centreX, centreY, 4.0 / 5 * sideLength);
-    } else {
+    } else { // this square is not a mine
       fill(255);
       textAlign(CENTER, CENTER);
       textSize(3.0 / 5 * sideLength);
       pushMatrix();
       translate(0, 0, 0.2); // show text slightly above game board
+      // if there are no mines around this square, show nothing (instead of 0)
       text(value == 0 ? "" : Integer.toString(value), centreX, centreY);
       popMatrix();
     }
