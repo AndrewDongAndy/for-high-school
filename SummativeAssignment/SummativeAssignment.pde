@@ -31,6 +31,7 @@ Elements
 - trees
 - rain
 - lightning
+- cursor
 
 "Alive" Elements
 - lightning
@@ -39,12 +40,12 @@ Elements
 
 User Interaction (minesweeper game!)
 - mouse
-  - allows clicking, flagging, sweeping squares
+  - left click fpr clicking and sweeping squares
+  - right click to place a flag
 - keyboard
   - 'n' for manual new game
   - 'r' for toggle rain
   - 'l' for toggle lightning
-  - 'f' while clicking to place flag
 
 
 Note use of translate(0, 0, z) frequently throughout to avoid drawing shapes in the same plane;
@@ -54,14 +55,18 @@ Input is temporarily disabled when the new game is loading.
 
 Heavy modularization allows easy addition of features such as difficulty levels (different board
 sizes, number of mines, etc.)
+
+To change the board size, change the BOARD_SIZE variable in the code.
+Note that the minesweeper game may still be a bit buggy, however it works
+in most use cases.
 */
 
 
 import java.util.Collection;
 import java.util.Collections;
 
-
-final int SQUARE_SIZE = 40;
+final int BOARD_SIZE = 15; // 20 by 20 board
+final float SQUARE_SIZE = 400.0 / BOARD_SIZE;
 final int NUM_RAINDROPS = 1000;
 
 MinesweeperGrid mg;
@@ -77,14 +82,12 @@ int lastLightning;
 
 
 void setup() {
+  textAlign(CENTER);
   text("Avoid lag on first click please lol", 0, -1000);
   noCursor();
   size(800, 800, P3D);
   newGame();
-  raindrops = new Raindrop[NUM_RAINDROPS];
-  for (int i = 0; i < NUM_RAINDROPS; i++) {
-    raindrops[i] = new Raindrop(random(200));
-  }
+  initRaindrops();
   showRain = true;
   showLightning = true;
   delayLightning = random(600, 1200); // lightning every 10-20 seconds
@@ -93,9 +96,16 @@ void setup() {
 }
 
 void newGame() {
-  mg = new MinesweeperGrid(10, 10, new Point(200, 200), SQUARE_SIZE, 10);
+  mg = new MinesweeperGrid(BOARD_SIZE, BOARD_SIZE, new Point(200, 200), SQUARE_SIZE, 40);
   won = lost = false;
   endTime = -1;
+//  for (int y = 0; y < mg.n; y++) {
+//    for (int x = 0; x < mg.m; x++) {
+//      print(mg.grid[y][x].getValue() + " ");
+//    }
+//    println();
+//  }
+//  println();
 }
 
 void drawCursor() {
@@ -125,11 +135,24 @@ void drawTrees() {
   drawTree(650, 500, 120);
 }
 
+void initRaindrops() {
+  raindrops = new Raindrop[NUM_RAINDROPS];
+  for (int i = 0; i < NUM_RAINDROPS; i++) { // for each raindrop
+    raindrops[i] = new Raindrop(random(200)); // spawn a new raindrop
+  }
+}
+
 void drawRain() {
-  for (int i = 0; i < NUM_RAINDROPS; i++) {
-    raindrops[i].displayFrame();
-    if (raindrops[i].z <= 0) {
-      raindrops[i] = new Raindrop();
+  // the existing raindrops keep falling when the rain is disabled;
+  // it's just that no new raindrops spawn
+  for (int i = 0; i < NUM_RAINDROPS; i++) { // for each raindrop
+    raindrops[i].displayFrame(); // automatically decrements z value of raindrop
+    if (raindrops[i].z <= -5) { // below the board plane
+      if (showRain) { // if user wants rain, spawn a new raindrop
+        raindrops[i] = new Raindrop();
+      } else { // hide the raindrop for future frames
+        raindrops[i].setShown(false);
+      }
     }
   }
 }
@@ -140,14 +163,22 @@ void drawLightning() {
 
 void handleWon() {
   fill(#C4CCFC);
-  text("Congratulations, you won!", width / 2, height / 25);
+  textSize(20);
+  text("Congratulations, you won!", width / 2, height / 15);
   delayBetweenGames = 200;
 }
 
 void handleLost() {
   fill(255);
-  text("You hit a mine. You lost!", width / 2, height / 25);
+  textSize(20);
+  text("You hit a mine. You lost!", width / 2, height / 15);
   delayBetweenGames = 100;
+}
+
+void showMinesLeft() {
+  fill(255);
+  textSize(20);
+  text("Mines remaining: " + max(0, mg.mines - mg.numFlagged), width / 2, height / 50);
 }
 
 void draw() {
@@ -177,44 +208,42 @@ void draw() {
   //println("flagged: " + mg.numFlagged);
   drawBirds();
   drawTrees();
-  if (showRain) {
-    drawRain();
-  }
+  drawRain();
+  showMinesLeft();
 }
 
 void mousePressed() {
-  if (endTime != -1) {
-    return; // don't take input if game is over
+  if (endTime != -1) { // game was over
+    return; // don't take input
   }
   int[] sq = mg.getSquare(mouseX, mouseY);
-  //println("mouse: " + mouseX + ", " + mouseY);
-  //println("square: " + sq[0] + ", " + sq[1]);
-  if (mouseButton == LEFT) {
-    if (sq[0] == -1) {
-      return; // didn't click on a square
+  if (sq[0] == -1) { // didn't click on a square
+    return;
+  }
+  if (mouseButton == LEFT) { // left mouse button was clicked
+    if (mg.grid[sq[0]][sq[1]].isClicked()) { // was a sweep
+      mg.sweep(sq[0], sq[1]);
+    } else { // wasn't a sweep (just a normal click)
+      mg.clickSquare(sq[0], sq[1]);
     }
-    if (!keyPressed) {
-      if (!mg.grid[sq[0]][sq[1]].isClicked()) {
-        mg.clickSquare(sq[0], sq[1]);
-      } else {
-        mg.sweep(sq[0], sq[1]);
-      }
-      if (won || lost && endTime == -1) {
-        endTime = frameCount;
-      }
-    } else if (keyPressed && key == 'f') {
-      mg.toggleFlagged(sq[0], sq[1]);
+    if (won || lost && endTime == -1) { // game over, and endTime was uninitialized
+      endTime = frameCount; // initialize to the frameCount of the game over time
     }
+  } else if (mouseButton == RIGHT) { // right mouse button was clicked
+    mg.toggleFlagged(sq[0], sq[1]);
   }
 }
 
 void keyPressed() {
-  switch (key) {
+  switch (key) { // find which key was clicked
     case 'n': // 'n' for new game
       newGame();
       break;
     case 'r': // 'r' for rain
-      showRain ^= true;
+      showRain = !showRain;
+      if (showRain) {
+        initRaindrops();
+      }
       break;
     case 'l': // 'l' for lightning
       showLightning ^= true;

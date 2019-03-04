@@ -1,8 +1,7 @@
 class Point {
-  int x;
-  int y;
+  float x, y;
   
-  Point(int x, int y) {
+  Point(float x, float y) {
     this.x = x;
     this.y = y;
   }

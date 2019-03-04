@@ -2,12 +2,12 @@ class MinesweeperGrid {
   int n, m; // rows and columns
   int mines;
   Point topLeft;
-  int squareSize;
+  float squareSize;
   MinesweeperSquare[][] grid;
   int numSafeClicked = 0;
   int numFlagged = 0;
   
-  MinesweeperGrid(int n, int m, Point topLeft, int squareSize, int mines) {
+  MinesweeperGrid(int n, int m, Point topLeft, float squareSize, int mines) {
     assert n > 0 && m > 0;
     assert 0 <= mines && mines <= n * m;
     this.n = n;
@@ -59,14 +59,14 @@ class MinesweeperGrid {
     // returns the row and column containing the given point, or {-1, -1} if none.
     // if mouse is on boundary of a square, returns {-1, -1}.
     // runs in O(1) time (hence fast for larger boards)
-    int dx = x - topLeft.x;
-    int dy = y - topLeft.y;
+    float dx = x - topLeft.x;
+    float dy = y - topLeft.y;
     if (dx <= 0 || dx >= m * squareSize // too far to left or right
         || dy <= 0 || dy >= n * squareSize // too far above or below
         || dx % squareSize == 0 || dy % squareSize == 0) { // on boundary of a square
       return new int[]{-1, -1};
     }
-    return new int[]{dy / squareSize, dx / squareSize};
+    return new int[]{(int) (dy / squareSize), (int) (dx / squareSize)};
   }
   
   int minesAround(int y, int x) {
@@ -111,13 +111,17 @@ class MinesweeperGrid {
       for (int[] d : dirs) {
         int ny = p[0] + d[0];
         int nx = p[1] + d[1];
-        if (!inGrid(ny, nx) || grid[ny][nx].isClicked() || minesAround(y, x) != 0) {
+        if (!inGrid(ny, nx) || grid[ny][nx].isClicked()) {
           continue;
         }
         numSafeClicked++;
+        if (grid[ny][nx].isFlagged()) {
+          grid[ny][nx].setFlagged(false);
+          numFlagged--;
+        }
         grid[ny][nx].setClicked(true);
         clickSquare(ny, nx);
-        if (grid[ny][nx].value == 0) {
+        if (grid[ny][nx].getValue() == 0) {
           q[++end] = new int[]{ny, nx};
         }
       }

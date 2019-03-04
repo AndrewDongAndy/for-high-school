@@ -1,11 +1,11 @@
 class MinesweeperSquare {
   Point topLeft;
-  int sideLength;
+  float sideLength;
   boolean clicked = false; // left-clicked
   boolean flagged = false;
   int value = -2; // -1 for mine, -2 for unclicked
   
-  MinesweeperSquare(Point topLeft, int sideLength) {
+  MinesweeperSquare(Point topLeft, float sideLength) {
     this.topLeft = topLeft;
     assert sideLength > 0;
     this.sideLength = sideLength;
