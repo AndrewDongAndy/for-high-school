@@ -10,7 +10,7 @@ class Raindrop {
     this.z = z;
   }
   
-  Raindrop() {
+  Raindrop() { // default is at top of screen
     this(200);
   }
   

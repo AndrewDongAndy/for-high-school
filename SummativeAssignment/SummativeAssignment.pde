@@ -58,7 +58,7 @@ User Interaction (minesweeper game!)
   - 'l' for toggle lightning
 
 Comments
-- whenever a command adds something to the screen (text, draw)
+- whenever a line adds something to the screen (text, rect, ellipse, etc.)
 - loops (for and while); used frequently to loop through arrays (1D and 2D)
 - if/else if/else; used nearly everywhere
 
@@ -85,7 +85,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 
-final int BOARD_SIZE = 15; // 20 by 20 board
+final int BOARD_SIZE = 15;
 final float SQUARE_SIZE = 400.0 / BOARD_SIZE;
 final int NUM_RAINDROPS = 1000;
 
@@ -140,7 +140,7 @@ void drawCursor() {
 
 void drawBirds() {
   // draw birds flying at different speeds
-  // use math to vary speed, direction, time off-screen, etc.
+  // use math (!) to vary speed, direction, time off-screen, etc.
   drawBird(width * 1.5 - (frameCount + 200) % (width * 1.5), 200, 50);
   drawBird(1.2 * frameCount % (width * 2.5), 300, 50);
   drawBird((0.8 * frameCount + 350) % (width * 2), 400, 50);
@@ -160,17 +160,17 @@ void drawTrees() {
 void initRaindrops() {
   raindrops = new Raindrop[NUM_RAINDROPS];
   for (int i = 0; i < NUM_RAINDROPS; i++) { // for each raindrop
-    raindrops[i] = new Raindrop(random(200)); // spawn a new raindrop
+    raindrops[i] = new Raindrop(random(200)); // spawn a new raindrop at a random height
   }
 }
 
 void drawRain() {
   // the existing raindrops keep falling when the rain is disabled;
-  // it's just that no new raindrops spawn
+  // however, no new raindrops will spawn
   for (int i = 0; i < NUM_RAINDROPS; i++) { // for each raindrop
     raindrops[i].displayFrame(); // automatically decrements z value of raindrop
-    if (raindrops[i].z <= -5) { // below the board plane
-      if (showRain) { // if user wants rain, spawn a new raindrop
+    if (raindrops[i].z <= -5) { // raindrop is below the board plane; respawn or hide
+      if (showRain) { // if user wants rain, spawn a new raindrop at the top
         raindrops[i] = new Raindrop();
       } else { // hide the raindrop for future frames
         raindrops[i].setShown(false);
@@ -180,7 +180,7 @@ void drawRain() {
 }
 
 void drawLightning() {
-  background(#FFEB08);
+  background(#FFEB08); // set background to a bright yellow
 }
 
 void handleWon() {
@@ -263,7 +263,7 @@ void keyPressed() {
       break;
     case 'r': // 'r' for rain
       showRain = !showRain;
-      if (showRain) {
+      if (showRain) { // user now wants rain
         initRaindrops();
       }
       break;

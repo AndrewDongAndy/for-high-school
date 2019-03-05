@@ -44,7 +44,7 @@ class MinesweeperSquare {
   }
   
   void display() {
-    rect(topLeft.x, topLeft.y, sideLength, sideLength);
+    rect(topLeft.x, topLeft.y, sideLength, sideLength); // draw this square
     float centreX = topLeft.x + sideLength / 2;
     float centreY = topLeft.y + sideLength / 2;
     if (isFlagged()) { // this square is flagged
@@ -63,6 +63,7 @@ class MinesweeperSquare {
       pushMatrix();
       translate(0, 0, 0.2); // show text slightly above game board
       // if there are no mines around this square, show nothing (instead of 0)
+      // otherwise, just show the value (number of mines around)
       text(value == 0 ? "" : Integer.toString(value), centreX, centreY);
       popMatrix();
     }
