@@ -34,27 +34,27 @@ plt.figure(figsize=(10, 7), dpi=200)
 plt.scatter(gdps, both)
 
 # linear x-axis
-x = np.linspace(1, max(gdps), num=1000)
+# x = np.linspace(1, max(gdps), num=1000)
 
 # logarithmic x-axis
-# plt.xscale('log')
-# x = np.logspace(np.log10(min(gdps)), np.log10(max(gdps)), num=1000)
+plt.xscale('log')
+x = np.logspace(np.log10(min(gdps)), np.log10(max(gdps)), num=1000)
 
 # linear fit
 y = f[0] * x + f[1]
 r = r_linear[0, 1]
-plt.plot(x, y, label=f'linear fit: r = {r:.3}, r^2 = {r ** 2:.3}')
+plt.plot(x, y, label=f'linear fit: y = {f[0]:.3}x + {f[1]:.3}; r = {r:.3}, r^2 = {r ** 2:.3}')
 
 # logarithmic fit
 y = g[0] * np.log(x) + g[1]
 r = r_log[0, 1]
-plt.plot(x, y, label=f'logarithmic fit: r = {r:.3}, r^2 = {r ** 2:.3}')
+plt.plot(x, y, label=f'logarithmic fit: y = {g[0]:.3} ln x + {g[1]:.3}; r = {r:.3}, r^2 = {r ** 2:.3}')
 
-plt.legend()
+plt.legend(loc='lower right')
 
 plt.xlabel('GDP per capita (US dollars)')
 plt.ylabel('life expectancy (years)')
 plt.ylim(bottom=43, top=91)
 # plt.ylim(bottom=-1)
 plt.title(PLOT_TITLE)
-plt.savefig('plots/regression_linear.png')
+plt.savefig('plots/regression.png')

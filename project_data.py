@@ -80,10 +80,34 @@ assert len(female) == entries
 assert len(both) == entries
 print(f'ok total {entries} entries')
 
-# data = list(zip(countries, pop, gdps, male, female, both))
+data = list(zip(countries, pop, gdps, male, female, both))
 
-print(f'median of GDPs: {statistics.median(gdps)}')
-print(f'median of life expectancies: {statistics.median(both)}')
+mean = statistics.mean(gdps)
+sigma = statistics.pstdev(gdps)
+print('GDP per capita data:')
+print(f'mean: {mean}')
+print(f'median: {statistics.median(gdps)}')
+print(f'standard deviation: {sigma}')
+data.sort(key=lambda t: t[2])
+for i, t in enumerate(data):
+    if t[0] == 'Canada':
+        print(f'percentile of Canada: {i / entries}')
+        print(f'z-score of Canada: {(t[2] - mean) / sigma}')
+print()
+
+print('Life Expectancy data:')
+mean = statistics.mean(both)
+sigma = statistics.pstdev(both)
+print(f'mean: {mean}')
+print(f'median: {statistics.median(both)}')
+print(f'standard deviation: {sigma}')
+data.sort(key=lambda t: t[5])
+for i, t in enumerate(data):
+    print(t)
+    if t[0] == 'Canada':
+        print(f'percentile of Canada by life expectancy: {i / entries}')
+        print(f'z-score of Canada: {(t[5] - mean) / sigma}')
+
 
 countries = np.array(countries)
 pop = np.array(pop)
