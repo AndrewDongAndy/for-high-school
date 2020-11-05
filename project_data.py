@@ -24,6 +24,8 @@ gender is either "Male", "Female", or "Both sexes"
 
 import statistics
 
+import numpy as np
+
 gdp_dict = {}
 with open('data_files/gdp_per_capita.csv') as f:
     for line in f:
@@ -78,7 +80,14 @@ assert len(female) == entries
 assert len(both) == entries
 print(f'ok total {entries} entries')
 
-data = list(zip(countries, pop, gdps, male, female, both))
+# data = list(zip(countries, pop, gdps, male, female, both))
 
 print(f'median of GDPs: {statistics.median(gdps)}')
 print(f'median of life expectancies: {statistics.median(both)}')
+
+countries = np.array(countries)
+pop = np.array(pop)
+gdps = np.array(gdps)
+male = np.array(male)
+female = np.array(female)
+both = np.array(both)

@@ -3,7 +3,7 @@ The scatter plot script.
 """
 
 
-from project_data import countries, pop, gdps, male, female, both, data
+from project_data import countries, pop, gdps, male, female, both
 
 import numpy as np
 import matplotlib.pyplot as plt
