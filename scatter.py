@@ -26,6 +26,11 @@ plt.scatter(gdps, both, s=sizes, c='black', edgecolors=edge_color, label='combin
 # plt.scatter(gdps, male, s=sizes, c='blue', edgecolors=edge_color, label='male')  # male
 # plt.scatter(gdps, female, s=sizes, c=DEEP_PINK, edgecolors=edge_color, label='female')  # female
 
+m = np.argmin(pop)
+M = np.argmax(pop)
+print(f'smallest population: {countries[m]} with {pop[m]}')
+print(f'largest population: {countries[M]} with {pop[M]}')
+
 # bubble chart
 # sizes = pop / 8e5
 # sizes = np.interp(pop, (min(pop), max(pop)), (10, 2e3))  # discuss during presentation?

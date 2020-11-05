@@ -103,7 +103,7 @@ print(f'median: {statistics.median(both)}')
 print(f'standard deviation: {sigma}')
 data.sort(key=lambda t: t[5])
 for i, t in enumerate(data):
-    print(t)
+    # print(t)
     if t[0] == 'Canada':
         print(f'percentile of Canada by life expectancy: {i / entries}')
         print(f'z-score of Canada: {(t[5] - mean) / sigma}')
