@@ -1,0 +1,6 @@
+DNA to RNA:
+uuu -> [invalid input]
+
+RNA to amino acid:
+acguacguagucgaguagaucguagcaugcuagugcaugcaugcaugu -> Thr Tyr Val Val Glu stop Ile Val Ala Cys stop Cys Met His Ala Cys
+

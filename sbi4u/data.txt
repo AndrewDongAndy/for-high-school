@@ -1,0 +1,14 @@
+phe phe leu leu ser ser ser ser tyr tyr stop stop cys cys stop trp leu leu leu leu pro pro pro pro his his gln gln arg arg arg arg ile ile ile met thr thr thr thr asn asn lys lys ser ser arg arg val val val val ala ala ala ala asp asp glu glu gly gly gly gly
+
+
+Ile: AUU, AUC, AUA
+Met: AUG
+Thr: ACA, ACC, ACG, ACU
+Asn: AAU, AAC
+Lys: AAA, AAG
+Ser: AGC, AGU
+Arg: AGA, AGG
+Val: GUU, GUC, GUA, GUG
+
+
+taken from https://www.sigmaaldrich.com/content/dam/sigma-aldrich/articles/biology/marketing-assets/Amino_Acids_Codon_Wheel_640x612.png
