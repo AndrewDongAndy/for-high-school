@@ -32,7 +32,12 @@ def translate(s):
         return '[invalid input]'
 
 
+
 with open('result.txt', 'w') as f:
+    def output(s):
+        print(s)
+        f.write(f'{s}\n')
+    
     while True:
         print('Select option:')
         print('1 - transcribe DNA to RNA')
@@ -45,14 +50,14 @@ with open('result.txt', 'w') as f:
         print('Enter a string.')
         s = input().lower()
         if op == 1:
-            f.write('DNA to RNA:\n')
-            f.write(f'{s} -> {transcribe(s)}\n\n')
+            output('DNA to RNA:\n')
+            output(f'{s} -> {transcribe(s)}\n\n')
         elif op == 2:
-            f.write('RNA to amino acid:\n')
-            f.write(f'{s} -> {translate(s)}\n\n')
+            output('RNA to amino acid:\n')
+            output(f'{s} -> {translate(s)}\n\n')
         else:
-            f.write('DNA to amino acid:\n')
-            f.write(f'{s} -> {translate(transcribe(s))}\n\n')
+            output('DNA to amino acid:\n')
+            output(f'{s} -> {translate(transcribe(s))}\n\n')
 
 print('The results are saved in result.txt.')
 print('Good luck with the rest of the course!')
