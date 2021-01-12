@@ -40,5 +40,5 @@ END_PAGE = 541
 
 download_pdf(
     page_to_id(HOMEOSTASIS_UNIT_START_PAGE),
-    page_to_id(END_PAGE)
+    page_to_id(480)
 )
