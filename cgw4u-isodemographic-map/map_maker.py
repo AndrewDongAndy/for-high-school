@@ -8,6 +8,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 ARIAL_FONT_PATH = 'C:/Windows/Fonts/arial.ttf'
+
+def get_font(size):
+    return ImageFont.truetype(ARIAL_FONT_PATH, size)
+
 OUTPUT_FILENAME = 'map.png'
 
 S = 10  # square side length for each population square
@@ -19,6 +23,17 @@ LIGHT_ORANGE = (254, 173, 92, OPACITY)
 YELLOW = (237, 223, 19, OPACITY)
 WHITE = (255, 255, 255, OPACITY)
 BLACK = (0, 0, 0, OPACITY)
+
+COLORS = [RED, DARK_ORANGE, LIGHT_ORANGE, YELLOW]
+LABELS = [
+    '35.0 and over',
+    '30.0 to 34.9',
+    '20.0 to 29.9',
+    'under 20.0'
+]
+
+LEGEND_SPACING = 30
+
 
 def get_color(birth_rate):
     if birth_rate > 34.95:
@@ -136,22 +151,31 @@ res = Image.fromarray(array)
 txt = Image.new("RGBA", res.size, (255, 255, 255, 0))
 d = ImageDraw.Draw(txt)
 
-
-small_arial = ImageFont.truetype(ARIAL_FONT_PATH, 14)
 for country, x, y in zip(countries, xs, ys):
     x *= S
     y *= S
     # w, h = d.textsize(country)
     # x -= w // 2
     # y -= h // 2
-    d.text((x, y), country, fill=(0, 0, 0, 255), font=small_arial, anchor='mm')
+    d.text((x, y), country, fill=BLACK, font=get_font(14), anchor='mm')
 
-title_arial = ImageFont.truetype(ARIAL_FONT_PATH, 60)
+# make title
 d.text((WIDTH * S // 2, 100), 'Isodemographic Map by Andy Dong',
-    fill=(0, 0, 0, 255),
-    font=title_arial,
+    fill=BLACK,
+    font=get_font(60),
     anchor='mm'
 )
+
+
+d.text((2390, 30), 'Legend (crude birth rate)', fill=BLACK, font=get_font(36))
+for i, (color, label) in enumerate(zip(COLORS, LABELS)):
+    y = 100 + LEGEND_SPACING * i
+    d.rectangle(
+        [(2500, y - S // 2), (2500 + S, y + S // 2)],
+        fill=color,
+        outline=BLACK,
+    )
+    d.text((2530, y), label, fill=BLACK, font=get_font(24), anchor='lm')
 
 res.paste(txt, mask=txt)
 res.save(OUTPUT_FILENAME)
