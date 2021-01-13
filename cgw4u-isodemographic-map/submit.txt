@@ -1,0 +1,40 @@
+Kenya	6	dark orange	34.1
+China	177	yellow	12.1
+Russia	18	yellow	12.7
+Brazil	26	yellow	14.5
+Poland	5	yellow	10.0
+South Africa	7	light orange	20.4
+Nigeria	24	red	39.1
+France	8	yellow	12.2
+Pakistan	26	light orange	28.8
+Ethiopia	13	dark orange	31.9
+Somalia	1	red	43.4
+India	163	yellow	19.7
+Canada	5	yellow	10.8
+Japan	16	yellow	8.17
+United Kingdom	8	yellow	12.6
+Egypt	12	light orange	27.3
+Turkey	10	yellow	16.5
+Democratic Republic of the Congo	10	red	41.5
+Myanmar	7	yellow	17.5
+Spain	6	yellow	8.9
+Peru	4	yellow	19.6
+El Salvador	1	yellow	17.2
+Syria	2	light orange	22.5
+Cambodia	2	light orange	23.8
+Italy	8	yellow	8.38
+Iraq	5	dark orange	34.2
+United States of America	42	yellow	12.5
+Mexico	16	yellow	18.5
+Germany	10	yellow	8.51
+Indonesia	33	yellow	19.6
+Argentina	6	yellow	17.4
+Sweden	1	yellow	12.2
+Bangladesh	20	yellow	19.4
+Sudan	5	dark orange	32.6
+Finland	1	yellow	10.7
+Vietnam	12	yellow	16.9
+Iran	11	yellow	17.1
+Thailand	9	yellow	10.5
+Tanzania	7	red	38.5
+Colombia	6	yellow	15.5
