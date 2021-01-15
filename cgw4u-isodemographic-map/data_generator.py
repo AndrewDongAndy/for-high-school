@@ -165,22 +165,3 @@ with open('land_area_data/data.csv') as csv_file:
                 area = float(row[s])
         assert area != -1
         d[country].area = area
-exit()
-
-for country, c in d.items():
-    im = c.pixels
-    loaded = im.load()
-
-    im.resize(())
-    pixels = [[1 if loaded[x, y][2] > 0 else 0 for x in range(im.width)] for y in range(im.height)]
-    area = sum(sum(row) for row in pixels)
-    print(area)
-    # for i in range(0, len(pixels), 3):
-    #     for j in range(0, len(pixels[i]), 3):
-    #         print(pixels[i][j], end='')
-    #     print()
-    break
-    area = 0
-    im.resize()
-
-print(d)

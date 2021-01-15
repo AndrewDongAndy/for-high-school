@@ -33,6 +33,7 @@ LABELS = [
 ]
 
 LEGEND_SPACING = 30
+TITLES_Y = 80  # y-coordinates for (vertical) middle of title and subtitle
 
 
 def get_color(birth_rate):
@@ -160,22 +161,37 @@ for country, x, y in zip(countries, xs, ys):
     d.text((x, y), country, fill=BLACK, font=get_font(14), anchor='mm')
 
 # make title
-d.text((WIDTH * S // 2, 100), 'Isodemographic Map by Andy Dong',
+d.text((WIDTH * S // 2, TITLES_Y), 'Isodemographic Map',
     fill=BLACK,
     font=get_font(60),
-    anchor='mm'
+    anchor='mm',
 )
 
+# make subtitle
+d.text((WIDTH * S - 50, TITLES_Y), 'by Andy Dong | January 15, 2021',
+    fill=BLACK,
+    font=get_font(40),
+    anchor='rm',
+)
 
-d.text((2390, 30), 'Legend (crude birth rate)', fill=BLACK, font=get_font(36))
+SHIFT = 40
+
+d.text((SHIFT, 30), 'Legend (crude birth rate)', fill=BLACK, font=get_font(36))
 for i, (color, label) in enumerate(zip(COLORS, LABELS)):
     y = 100 + LEGEND_SPACING * i
     d.rectangle(
-        [(2500, y - S // 2), (2500 + S, y + S // 2)],
+        [(SHIFT + 110, y - S // 2), (SHIFT + 110 + S, y + S // 2)],
         fill=color,
         outline=BLACK,
     )
-    d.text((2530, y), label, fill=BLACK, font=get_font(24), anchor='lm')
+    d.text((SHIFT + 140, y), label, fill=BLACK, font=get_font(24), anchor='lm')
+d.text((SHIFT, 100 + LEGEND_SPACING * 4.5), 'each square represents 7,777,777 people',
+    fill=BLACK,
+    font=get_font(24),
+    # anchor='lm'
+)
+
+res.paste(Image.open('compass.jpg'), (500, 30))
 
 res.paste(txt, mask=txt)
 res.save(OUTPUT_FILENAME)
