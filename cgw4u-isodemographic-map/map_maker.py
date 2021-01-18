@@ -135,12 +135,15 @@ for row in a:
 a = [[j for j in row] for row in new_a]
 
 
+LINE_WEIGHT = 3
 for i in range(WIDTH * S):
-    if a[SHIFT_Y * S][i] == WHITE:
-        a[SHIFT_Y * S][i] = BLACK
+    for j in range(LINE_WEIGHT):
+        if a[SHIFT_Y * S + j][i] == WHITE:
+            a[SHIFT_Y * S + j][i] = BLACK
 for i in range(HEIGHT * S):
-    if a[i][SHIFT_X * S] == WHITE:
-        a[i][SHIFT_X * S] = BLACK
+    for j in range(LINE_WEIGHT):
+        if a[i][SHIFT_X * S + j] == WHITE:
+            a[i][SHIFT_X * S + j] = BLACK
 
 # Convert the pixels into an array using numpy
 array = np.array(a, dtype=np.uint8)
@@ -152,6 +155,21 @@ res = Image.fromarray(array)
 txt = Image.new("RGBA", res.size, (255, 255, 255, 0))
 d = ImageDraw.Draw(txt)
 
+# label prime meridian; shift by 22 to make the line between the two words
+d.text((SHIFT_X * S + 22, HEIGHT * S - 25), 'Prime Meridian',
+    fill=BLACK,
+    font=get_font(36),
+    anchor='mb',
+)
+
+# label equator
+d.text((25, SHIFT_Y * S - 25), 'Equator',
+    fill=BLACK,
+    font=get_font(36),
+    anchor='ls',
+)
+
+# label countries
 for country, x, y in zip(countries, xs, ys):
     x *= S
     y *= S
@@ -189,6 +207,11 @@ d.text((SHIFT, 100 + LEGEND_SPACING * 4.5), 'each square represents 7,777,777 pe
     fill=BLACK,
     font=get_font(24),
     # anchor='lm'
+)
+d.text((WIDTH * S / 2, HEIGHT * S - 100), 'Scale: N/A',
+    fill=BLACK,
+    font=get_font(30),
+    anchor='mm'
 )
 
 res.paste(Image.open('compass.jpg'), (500, 30))
