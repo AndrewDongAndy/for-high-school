@@ -10,7 +10,3 @@ Thanks Mr. Saayman for letting students use various tools (Python in my case)!
 Code for doing DNA transcription and RNA translation.
 
 Just run `python translator.py` to use.
-
-
-## tej3m-minesweeper
-Processing assignment for TEJ 3M.
