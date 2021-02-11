@@ -7,18 +7,25 @@ from pathlib import Path
 import requests
 from time import sleep
 
-URL_BASE = 'http://k12resources.nelson.com/science/9780176939137/student/files/mobile/{}.jpg'
+# biology
+# URL_BASE = 'http://k12resources.nelson.com/science/9780176939137/student/files/mobile/{}.jpg'
+
+# chemistry
+URL_BASE = 'https://k12resources.nelson.com/science/9780176939199/student/files/mobile/{}.jpg'
 PAGES_DIRECTORY = 'pages'
 
 UNIT = 'mm'
 WIDTH = 210
 HEIGHT = 268
 
+
 def url_for_id(id):
     return URL_BASE.format(id)
 
+
 def page_to_id(page):
     return page + 8
+
 
 def download_pdf(start_id, end_id):
     pdf = FPDF(unit=UNIT, format=(WIDTH, HEIGHT))
